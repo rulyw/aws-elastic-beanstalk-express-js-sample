@@ -7,7 +7,7 @@ pipeline {
     }
 
     environment {
-        DOCKER_IMAGE = 'node-app'  // Docker image name for the Node.js app
+        DOCKER_IMAGE = 'node:16' //'node-app'  // Docker image name for the Node.js app
         DOCKER_REGISTRY = 'docker.io' // Docker registry (change to your own if using a private registry)
     }
 
