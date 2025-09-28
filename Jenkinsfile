@@ -67,6 +67,7 @@ pipeline {
         always {
             // Clean up Docker images after the build
             //sh 'docker system prune -f'
+            sh 'docker ps'
         }
         success {
             // Notify success (optional)
