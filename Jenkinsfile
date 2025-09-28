@@ -22,7 +22,7 @@ services:
       JENKINS_OPTS: "--prefix=/jenkins"
       JAVA_OPTS: "-Djenkins.install.runSetupWizard=false"
     ports:
-      - "8080:8080"  # Jenkins will still use port 8080
+      - "3000:3000"  # Jenkins will still use port 3000
       - "50000:50000"  # Agent communication port
     volumes:
       - jenkins_home:/var/jenkins_home
@@ -37,7 +37,7 @@ services:
     container_name: node-app
     build: .
     ports:
-      - "3000:3000"  # Map port 3000 on host to port 3000 in the container
+      - "8080:8080"  # Map port 8080 on host to port 8080 in the container
     depends_on:
       - jenkins
     networks:
