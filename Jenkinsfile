@@ -34,34 +34,34 @@ pipeline {
         //        }
         //    }
         //}
-        stage('Build Docker Image') {
-            steps {
-                // Build Docker image for the Node.js app
-                script {
-                    //sh "docker build -t ${DOCKER_IMAGE}:${BUILD_ID} ."
-                    //sh "docker ps -a"
-                    docker.build('node-app:7')
-                }
-            }
-        }
-        stage('Docker Security Scan') {
-            steps {
-                // Run a security scan on the Docker image (using Snyk CLI or any other scanner)
-                script {
-                    sh "snyk test --docker ${DOCKER_IMAGE}:${BUILD_ID}"
-                }
-            }
-        }
-        stage('Push Docker Image') {
-            when {
-                branch 'main'  // Only push to Docker registry from the main branch
-            }
-            steps {
-                script {
-                    sh "docker push ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${BUILD_ID}"
-                }
-            }
-        }
+        //stage('Build Docker Image') {
+        //    steps {
+        //        // Build Docker image for the Node.js app
+        //        script {
+        //            //sh "docker build -t ${DOCKER_IMAGE}:${BUILD_ID} ."
+        //            //sh "docker ps -a"
+        //            docker.build('node-app:7')
+        //        }
+        //    }
+        //}
+        //stage('Docker Security Scan') {
+        //    steps {
+        //        // Run a security scan on the Docker image (using Snyk CLI or any other scanner)
+        //        script {
+        //            sh "snyk test --docker ${DOCKER_IMAGE}:${BUILD_ID}"
+        //        }
+        //    }
+        //}
+        //stage('Push Docker Image') {
+        //    when {
+        //        branch 'main'  // Only push to Docker registry from the main branch
+        //    }
+        //    steps {
+        //        script {
+        //            sh "docker push ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${BUILD_ID}"
+        //        }
+        //    }
+        //}
     }
     post {
         always {
