@@ -6,7 +6,7 @@ pipeline {
         DOCKER_IMAGE = "rulyw/testass2:${BUILD_ID}"
         // Set Snyk API Token from Jenkins Credentials
         // This credential MUST be a 'Secret Text' named 'SNYK_TOKEN'
-        SNYK_TOKEN_ENV = credentials('SNYK_TOKEN')
+        SNYK_TOKEN_ENV = credentials('3bee68f3-944a-4032-8998-600c5d1479f8')
         // Set the path to the Dockerfile
         DOCKERFILE_PATH = 'Dockerfile.deploy' // Use the one provided in the sample repo
     }
