@@ -28,8 +28,8 @@ pipeline {
         }
         stage('Run OWASP Dependency-Check') {
             steps {
-                // Run Dependency-Check CLI
-                dependencyCheck additionalArguments: '--scan .', failBuildOnCVSS: 7, healthy: 50, unstable: 60
+                // Run Dependency-Check with the valid parameters
+                dependencyCheck additionalArguments: '--scan .', stopBuildOnCVSS: 7
             }
         }
         //stage('Run Unit Tests') {
