@@ -40,7 +40,7 @@ pipeline {
                 script {
                     //sh "docker build -t ${DOCKER_IMAGE}:${BUILD_ID} ."
                     //sh "docker ps -a"
-                    docker.build( ${DOCKER_IMAGE}:${BUILD_ID})
+                    docker.build('node-app:7')
                 }
             }
         }
