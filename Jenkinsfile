@@ -9,6 +9,7 @@ pipeline {
     environment {
         DOCKER_IMAGE = 'node:16' //'node-app'  // Docker image name for the Node.js app
         DOCKER_REGISTRY = 'docker.io' // Docker registry (change to your own if using a private registry)
+        DOCKER_CREDENTIALS = credentials('91ca3fa6-15c9-4744-886b-b42d350c6f05')  
     }
 
     stages {
