@@ -63,7 +63,7 @@ pipeline {
                 // 1. SCANNER STEP: Invokes the CLI to run the analysis and generate the report.
                 dependencyCheck(
                     // Parameter that was causing the error: it belongs here!
-                    scanPath: './', 
+                    // scanPath: './', 
                     odcInstallation: env.OWASP_DC_TOOL, 
                     additionalArguments: '''--format XML --project='AWS-Express-App' --suppressPlainTextReport'''
                 )
