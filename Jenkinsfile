@@ -2,83 +2,80 @@
 pipeline {
     // Define environment variables
     environment {
-        // Specify Docker image name and tag
-        DOCKER_IMAGE = "rulyw/testass2:${BUILD_ID}"
-        // Set Snyk API Token from Jenkins Credentials
-        // This credential MUST be a 'Secret Text' named 'SNYK_TOKEN'
-        SNYK_TOKEN_ENV = credentials('3bee68f3-944a-4032-8998-600c5d1479f8')
-        // Set the path to the Dockerfile
+        // Define your Docker Hub username
+        DOCKER_USER = 'rulyw' 
+        DOCKER_IMAGE = "${DOCKER_USER}/testass2app:${BUILD_ID}"
         DOCKERFILE_PATH = 'Dockerfile.deploy' // Use the one provided in the sample repo
+        # Dependency Check Settings
+        DC_REPORT = 'dependency-check-report.xml'
     }
 
-    // Set the build agent using the required Node.js version
+    // Set the build agent using the required Node.js version (i)
     agent {
         docker {
-            image 'node:16' // Node 16 Docker image as the build agent
-            args '-u root' // Use root to avoid permission issues during npm install/snyk install
+            // Using Node 16 slim for the core build agent
+            image 'node:16'
+            // We use root to avoid permission issues during npm install and installing Java/DC
+            args '-u root' 
         }
     }
 
-    // Define the stages of the CI/CD pipeline
     stages {
-        stage('Initialize & Dependencies') {
+        stage('Initialize & Dependencies (ii)') {
             steps {
-                echo 'Installing Node.js dependencies...'
-                // Install dependencies
+                echo 'Installing core Node.js dependencies...'
                 sh 'npm install --save'
             }
         }
 
-        stage('Unit Tests') {
+        stage('Unit Tests (ii)') {
             steps {
                 echo 'Running unit tests...'
-                // The sample app uses Mocha. Run the test script defined in package.json
+                // Run the default test script defined in package.json
                 sh 'npm test'
             }
         }
 
-        stage('Dependency Vulnerability Scan (Snyk)') {
+        stage('Dependency Scan (OWASP Dependency-Check) (a)') {
             steps {
-                echo 'Running Snyk vulnerability scan...'
-                // Install Snyk CLI globally
-                sh 'npm install -g snyk'
-                // Authenticate Snyk using the token from Jenkins Credentials
-                sh "snyk auth ${SNYK_TOKEN_ENV}"
-                // Run a test, specifying the project type and setting the fail threshold.
-                // Fail the build if any High or Critical vulnerability is found.
-                // The '--severity-threshold=high' option enforces the failure requirement.
-                sh 'snyk test --project-type=npm --severity-threshold=high'
+                echo 'Setting up and running OWASP Dependency-Check...'
+                // Install Java/JDK (required by Dependency-Check CLI)
+                sh 'apt-get update && apt-get install -y default-jdk' 
+                
+                // Install Dependency-Check CLI (via NPM)
+                sh 'npm install -g dependency-check'
+
+                // Run the scan. The --failOnCVSS is the critical step (b)
+                // Use a high threshold (e.g., CVSS 7.0 for High/Critical) 
+                // and output the report as XML.
+                sh "dependency-check --scan=./ --project='AWS-Express-App' --format=XML --out=./ --failOnCVSS=7.0"
+                
+                // Optional: Archive the report for later viewing in Jenkins
+                archiveArtifacts artifacts: "${DC_REPORT}", onlyIfSuccessful: true
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Build Docker Image (ii)') {
             steps {
                 echo "Building Docker image: ${DOCKER_IMAGE}"
-                // Build the Docker image using the DinD daemon (via DOCKER_HOST)
-                // Use the Dockerfile provided in the sample repo
+                // Build the Docker image using the DinD daemon (via DOCKER_HOST environment variable)
                 sh "docker build -t ${DOCKER_IMAGE} -f ${DOCKERFILE_PATH} ."
             }
         }
 
-        stage('Push to Registry') {
-            // This assumes you've configured Docker Hub credentials in Jenkins
-            // (e.g., using 'Docker Registry' credentials type)
-            // Replace 'dockerhub-credentials-id' with your actual Jenkins credential ID
-            when {
-                // Only execute if previous stages succeeded
-                expression {
-                    return currentBuild.result == 'SUCCESS' || currentBuild.result == null
-                }
-            }
-            steps {
-                echo "Pushing Docker image: ${DOCKER_IMAGE}"
-                // Log in to Docker Hub using stored credentials
-                withCredentials([usernamePassword(credentialsId: 'rulyw', passwordVariable: 'Assignment21784408', usernameVariable: 'rulyw')]) {
-                    sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
-                    // Push the built image
-                    sh "docker push ${DOCKER_IMAGE}"
-                }
-            }
-        }
+        //stage('Push to Registry (ii)') {
+        //    // Assumes Docker Hub credentials are set up in Jenkins as 'dockerhub-credentials-id'
+        //    when {
+        //        expression { return currentBuild.result == 'SUCCESS' }
+        //    }
+        //    steps {
+        //        echo "Pushing Docker image: ${DOCKER_IMAGE}"
+        //        // Securely retrieve credentials
+        //        withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials-id', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+        //            sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
+        //            sh "docker push ${DOCKER_IMAGE}"
+        //        }
+        //    }
+        //}
     }
 }
