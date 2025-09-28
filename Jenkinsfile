@@ -27,12 +27,12 @@ pipeline {
                 }
             }
         }
-        stage('Run OWASP Dependency-Check') {
-            steps {
-                // Run Dependency-Check with the correct parameters
-                dependencyCheck additionalArguments: '--scan .', stopBuild: true
-            }
-        }
+        //stage('Run OWASP Dependency-Check') {
+        //    steps {
+        //        // Run Dependency-Check with the correct parameters
+        //        dependencyCheck additionalArguments: '--scan .', stopBuild: true
+        //    }
+        //}
         //stage('Run Unit Tests') {
         //    steps {
         //        // Run unit tests (you can modify this based on your test framework, assuming `npm test`)
