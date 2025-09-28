@@ -1,89 +1,84 @@
+// Use a declarative pipeline syntax
 pipeline {
-    agent {
-        docker { 
-            image 'node:16'  // Use Node.js 16 Docker image as the build agent
-            args '-u root'   // Run as root (needed for installing dependencies and Docker tasks)
-        }
-    }
-
+    // Define environment variables
     environment {
-        DOCKER_IMAGE = 'node:16' //'node-app'  // Docker image name for the Node.js app
-        DOCKER_REGISTRY = 'docker.io' // Docker registry (change to your own if using a private registry)
-        DOCKER_CREDENTIALS = credentials('91ca3fa6-15c9-4744-886b-b42d350c6f05')  
+        // Specify Docker image name and tag
+        DOCKER_IMAGE = "rulyw/testass2:${BUILD_ID}"
+        // Set Snyk API Token from Jenkins Credentials
+        // This credential MUST be a 'Secret Text' named 'SNYK_TOKEN'
+        SNYK_TOKEN_ENV = credentials('SNYK_TOKEN')
+        // Set the path to the Dockerfile
+        DOCKERFILE_PATH = 'Dockerfile.deploy' // Use the one provided in the sample repo
     }
 
+    // Set the build agent using the required Node.js version
+    agent {
+        docker {
+            image 'node:16' // Node 16 Docker image as the build agent
+            args '-u root' // Use root to avoid permission issues during npm install/snyk install
+        }
+    }
+
+    // Define the stages of the CI/CD pipeline
     stages {
-        stage('Checkout') {
+        stage('Initialize & Dependencies') {
             steps {
-                // Pull the code from the Git repository
-                checkout scm
+                echo 'Installing Node.js dependencies...'
+                // Install dependencies
+                sh 'npm install --save'
             }
         }
-        stage('Install Dependencies') {
+
+        stage('Unit Tests') {
             steps {
-                // Install dependencies using npm
-                script {
-                    sh 'npm install --save'
-                }
+                echo 'Running unit tests...'
+                // The sample app uses Mocha. Run the test script defined in package.json
+                sh 'npm test'
             }
         }
-        //stage('Run OWASP Dependency-Check') {
-        //    steps {
-        //        // Run Dependency-Check with the correct parameters
-        //        dependencyCheck additionalArguments: '--scan .', stopBuild: true
-        //    }
-        //}
-        //stage('Run Unit Tests') {
-        //    steps {
-        //        // Run unit tests (you can modify this based on your test framework, assuming `npm test`)
-        //        script {
-        //            sh 'npm test'
-        //        }
-        //    }
-        //}
+
+        stage('Dependency Vulnerability Scan (Snyk)') {
+            steps {
+                echo 'Running Snyk vulnerability scan...'
+                // Install Snyk CLI globally
+                sh 'npm install -g snyk'
+                // Authenticate Snyk using the token from Jenkins Credentials
+                sh "snyk auth ${SNYK_TOKEN_ENV}"
+                // Run a test, specifying the project type and setting the fail threshold.
+                // Fail the build if any High or Critical vulnerability is found.
+                // The '--severity-threshold=high' option enforces the failure requirement.
+                sh 'snyk test --project-type=npm --severity-threshold=high'
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
-                // Build Docker image for the Node.js app
-                script {
-                    sh "docker build -t ${REGISTRY}/${IMAGE_NAME}:${env.BUILD_ID} ."
-                    //sh "docker build -t ${DOCKER_IMAGE}:${BUILD_ID} ."
-                    //sh "docker ps -a"
-                    //docker.build('node-app:7')
-                }
+                echo "Building Docker image: ${DOCKER_IMAGE}"
+                // Build the Docker image using the DinD daemon (via DOCKER_HOST)
+                // Use the Dockerfile provided in the sample repo
+                sh "docker build -t ${DOCKER_IMAGE} -f ${DOCKERFILE_PATH} ."
             }
         }
-        //stage('Docker Security Scan') {
-        //    steps {
-        //        // Run a security scan on the Docker image (using Snyk CLI or any other scanner)
-        //        script {
-        //            sh "snyk test --docker ${DOCKER_IMAGE}:${BUILD_ID}"
-        //        }
-        //    }
-        //}
-        //stage('Push Docker Image') {
-        //    when {
-        //        branch 'main'  // Only push to Docker registry from the main branch
-        //    }
-        //    steps {
-        //        script {
-        //            sh "docker push ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${BUILD_ID}"
-        //        }
-        //    }
-        //}
-    }
-    post {
-        always {
-            // Clean up Docker images after the build
-            //sh 'docker system prune -f'
-            echo 'always do this!'
-        }
-        success {
-            // Notify success (optional)
-            echo 'Build and Docker image pushed successfully!'
-        }
-        failure {
-            // Handle failures (optional)
-            echo 'Build failed. Please check the logs.'
+
+        stage('Push to Registry') {
+            // This assumes you've configured Docker Hub credentials in Jenkins
+            // (e.g., using 'Docker Registry' credentials type)
+            // Replace 'dockerhub-credentials-id' with your actual Jenkins credential ID
+            when {
+                // Only execute if previous stages succeeded
+                expression {
+                    return currentBuild.result == 'SUCCESS' || currentBuild.result == null
+                }
+            }
+            steps {
+                echo "Pushing Docker image: ${DOCKER_IMAGE}"
+                // Log in to Docker Hub using stored credentials
+                withCredentials([usernamePassword(credentialsId: 'rulyw', passwordVariable: 'Assignment21784408', usernameVariable: 'rulyw')]) {
+                    sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
+                    // Push the built image
+                    sh "docker push ${DOCKER_IMAGE}"
+                }
+            }
         }
     }
 }
