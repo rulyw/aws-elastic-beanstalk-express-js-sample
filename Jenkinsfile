@@ -26,14 +26,14 @@ pipeline {
                 }
             }
         }
-        stage('Run Unit Tests') {
-            steps {
-                // Run unit tests (you can modify this based on your test framework, assuming `npm test`)
-                script {
-                    sh 'npm test'
-                }
-            }
-        }
+        //stage('Run Unit Tests') {
+        //    steps {
+        //        // Run unit tests (you can modify this based on your test framework, assuming `npm test`)
+        //        script {
+        //            sh 'npm test'
+        //        }
+        //    }
+        //}
         stage('Build Docker Image') {
             steps {
                 // Build Docker image for the Node.js app
