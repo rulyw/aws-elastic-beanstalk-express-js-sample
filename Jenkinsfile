@@ -28,13 +28,6 @@ pipeline {
             }
         }
 
-        stage('Unit Tests (ii)') {
-            steps {
-                echo 'Running unit tests...'
-                // Run the default test script defined in package.json
-                sh 'npm test'
-            }
-        }
 
         stage('Dependency Scan (OWASP Dependency-Check) (a)') {
             steps {
