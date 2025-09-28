@@ -30,14 +30,14 @@ pipeline {
                 sh 'sed -i "/security/d" /etc/apt/sources.list'
 
                 // Update package lists and install the JDK (required by Dependency-Check)
-                sh 'apt-get update && apt-get install -y default-jdk' 
+                sh 'apt-get update && apt-get install -y default-jre' 
             }
         }
 
         stage('Initialize & Unit Tests') {
             agent {
                 docker {
-                    image 'node:16-slim'
+                    image 'node:16'
                     args '-u root'
                 }
             }
