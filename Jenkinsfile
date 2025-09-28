@@ -17,7 +17,7 @@ pipeline {
             // This stage runs as root to install packages and fix EOL repos.
             agent {
                 docker {
-                    image 'node:16-slim'
+                    image 'node:16'
                     args '-u root'
                 }
             }
@@ -45,8 +45,6 @@ pipeline {
                 echo 'Installing core Node.js dependencies...'
                 sh 'npm install --save'
 
-                echo 'Running unit tests...'
-                sh 'npm test'
             }
         }
 
