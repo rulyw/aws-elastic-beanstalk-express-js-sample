@@ -6,7 +6,7 @@ pipeline {
         DOCKER_USER = 'rulyw' 
         DOCKER_IMAGE = "${DOCKER_USER}/testass2app:${BUILD_ID}"
         DOCKERFILE_PATH = 'Dockerfile.deploy' // Use the one provided in the sample repo
-        # Dependency Check Settings
+        // Dependency Check Settings
         DC_REPORT = 'dependency-check-report.xml'
     }
 
