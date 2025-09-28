@@ -13,14 +13,14 @@ pipeline {
     }
 
     stages {
-        stage('Setup Agent & Java') {
-            // This stage runs as root to install packages and fix EOL repos.
-            agent {
-                docker {
-                    image 'node:16'
-                    args '-u root'
-                }
-            }
+        //stage('Setup Agent & Java') {
+        //    // This stage runs as root to install packages and fix EOL repos.
+        //    agent {
+        //        docker {
+        //            image 'node:16'
+        //            args '-u root'
+        //        }
+        //    }
             //steps {
             //    echo 'Setting up Java and fixing EOL Debian repositories...'
             //    
@@ -32,7 +32,7 @@ pipeline {
             //    // Update package lists and install the JDK (required by Dependency-Check)
             //    sh 'apt-get update && apt-get install -y default-jre' 
             //}
-        }
+        //}
 
         stage('Initialize & Unit Tests') {
             agent {
