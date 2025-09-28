@@ -39,7 +39,8 @@ pipeline {
                 // Build Docker image for the Node.js app
                 script {
                     //sh "docker build -t ${DOCKER_IMAGE}:${BUILD_ID} ."
-                    sh "docker ps -a"
+                    //sh "docker ps -a"
+                    docker.build( ${DOCKER_IMAGE}:${BUILD_ID})
                 }
             }
         }
