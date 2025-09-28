@@ -1,5 +1,10 @@
 pipeline {
-    agent any  // Use any available agent (no specific node required)
+    agent {
+        docker { 
+            image 'node:16'  // Use Node.js 16 Docker image as the build agent
+            args '-u root'   // Run as root (needed for installing dependencies and Docker tasks)
+        }
+    }
 
     environment {
         DOCKER_IMAGE = 'my-node-app'  // Docker image name for the Node.js app
