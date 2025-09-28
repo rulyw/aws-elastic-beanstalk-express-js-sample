@@ -26,6 +26,12 @@ pipeline {
                 }
             }
         }
+        stage('Run OWASP Dependency-Check') {
+            steps {
+                // Run Dependency-Check CLI
+                dependencyCheck additionalArguments: '--scan .', failBuildOnCVSS: 7, healthy: 50, unstable: 60
+            }
+        }
         //stage('Run Unit Tests') {
         //    steps {
         //        // Run unit tests (you can modify this based on your test framework, assuming `npm test`)
@@ -34,16 +40,16 @@ pipeline {
         //        }
         //    }
         //}
-        stage('Build Docker Image') {
-            steps {
-                // Build Docker image for the Node.js app
-                script {
-                    sh "docker build -t ${DOCKER_IMAGE}:${BUILD_ID} ."
-                    //sh "docker ps -a"
-                    //docker.build('node-app:7')
-                }
-            }
-        }
+        //stage('Build Docker Image') {
+        //    steps {
+        //        // Build Docker image for the Node.js app
+        //        script {
+        //            sh "docker build -t ${DOCKER_IMAGE}:${BUILD_ID} ."
+        //            //sh "docker ps -a"
+        //            //docker.build('node-app:7')
+        //        }
+        //    }
+        //}
         //stage('Docker Security Scan') {
         //    steps {
         //        // Run a security scan on the Docker image (using Snyk CLI or any other scanner)
