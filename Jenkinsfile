@@ -27,23 +27,24 @@ pipeline {
                 sh 'npm install --save'
             }
         }
-
-
-        stage('Dependency Scan (OWASP Dependency-Check) (a)') {
+        stage('Dependency Scan (OWASP Dependency-Check)') {
             steps {
                 echo 'Setting up and running OWASP Dependency-Check...'
+                
+                // --- FIX: Change sources.list to point to the Debian archive ---
+                sh 'sed -i s/deb.debian.org/archive.debian.org/g /etc/apt/sources.list'
+                sh 'sed -i "/security/d" /etc/apt/sources.list'
+                // -----------------------------------------------------------------
+
                 // Install Java/JDK (required by Dependency-Check CLI)
                 sh 'apt-get update && apt-get install -y default-jdk' 
                 
                 // Install Dependency-Check CLI (via NPM)
                 sh 'npm install -g dependency-check'
 
-                // Run the scan. The --failOnCVSS is the critical step (b)
-                // Use a high threshold (e.g., CVSS 7.0 for High/Critical) 
-                // and output the report as XML.
+                // Run the scan...
                 sh "dependency-check --scan=./ --project='AWS-Express-App' --format=XML --out=./ --failOnCVSS=7.0"
                 
-                // Optional: Archive the report for later viewing in Jenkins
                 archiveArtifacts artifacts: "${DC_REPORT}", onlyIfSuccessful: true
             }
         }
