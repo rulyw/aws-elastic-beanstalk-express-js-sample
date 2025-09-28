@@ -21,17 +21,17 @@ pipeline {
                     args '-u root'
                 }
             }
-            steps {
-                echo 'Setting up Java and fixing EOL Debian repositories...'
-                
-                // FIX: Replace old EOL deb.debian.org sources with archive.debian.org
-                sh 'sed -i s/deb.debian.org/archive.debian.org/g /etc/apt/sources.list'
-                // Remove the security repository lines
-                sh 'sed -i "/security/d" /etc/apt/sources.list'
+            //steps {
+            //    echo 'Setting up Java and fixing EOL Debian repositories...'
+            //    
+            //    // FIX: Replace old EOL deb.debian.org sources with archive.debian.org
+            //    sh 'sed -i s/deb.debian.org/archive.debian.org/g /etc/apt/sources.list'
+            //    // Remove the security repository lines
+            //    sh 'sed -i "/security/d" /etc/apt/sources.list'
 
-                // Update package lists and install the JDK (required by Dependency-Check)
-                sh 'apt-get update && apt-get install -y default-jre' 
-            }
+            //    // Update package lists and install the JDK (required by Dependency-Check)
+            //    sh 'apt-get update && apt-get install -y default-jre' 
+            //}
         }
 
         stage('Initialize & Unit Tests') {
@@ -79,7 +79,7 @@ pipeline {
         stage('Containerization') {
             agent {
                 docker {
-                    image 'node:16-slim' 
+                    image 'node:16' 
                     args '-u root'
                 }
             }
@@ -97,7 +97,7 @@ pipeline {
             }
             agent {
                 docker {
-                    image 'node:16-slim' 
+                    image 'node:16' 
                     args '-u root'
                 }
             }
