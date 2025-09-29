@@ -24,6 +24,8 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 sh 'npm install --save'
+                echo "Listing Docker tool directory contents"
+                sh "ls -l ${docker}"
             }
         }
 
@@ -52,8 +54,6 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 sh 'docker build -t $REGISTRY/$IMAGE_NAME:$BUILD_NUMBER .'
-                echo "Listing Docker tool directory contents"
-                sh "ls -l ${docker}"
             }
         }*/
         
