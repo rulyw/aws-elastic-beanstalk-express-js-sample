@@ -60,7 +60,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 sh '''
-                  docker build -t ruly_w:testass2 .
+                  docker buildx build -t ruly_w:testass2 .
                 '''
             }
         }
