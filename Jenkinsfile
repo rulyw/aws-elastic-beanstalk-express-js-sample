@@ -58,16 +58,12 @@ pipeline {
         
 
         stage('Build Docker Image') {
-            agent{
-                docker{
-                    image 'node:16'
-                }
-            }
             steps {
-                echo "$DOCKER_HOST"
+                ${tool 'mydocker'} build -t mydocker-image 
+                /*echo "$DOCKER_HOST"
                 sh '''
                   docker ps -a
-                '''
+                '''*/
             }
         }
 
