@@ -45,13 +45,13 @@ pipeline {
             //    }
             //    sh 'docker push $REGISTRY/$IMAGE_NAME:$BUILD_NUMBER'
             //}
-            
+                echo DOCKER_CREDENTIALS
                 // Gunakan kredensial yang disimpan di Jenkins untuk login ke Docker Registry
-                withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS, usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                    sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin $REGISTRY'
-                }
+                //withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS, usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                //    sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin $REGISTRY'
+                //}
                 // Push image ke Docker Registry
-                sh 'docker push $REGISTRY/$IMAGE_NAME:$BUILD_NUMBER'
+                //sh 'docker push $REGISTRY/$IMAGE_NAME:$BUILD_NUMBER'
             }
         }
     }
