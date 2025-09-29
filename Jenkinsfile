@@ -31,12 +31,12 @@ pipeline {
             }
         }
 
-        //stage('Build Docker Image') {
-        //    steps {
-                //sh 'docker build -t $REGISTRY/$IMAGE_NAME:$BUILD_NUMBER .'
-        //        sh 'docker version'
-        //    }
-        //}
+        stage('Build Docker Image') {
+            steps {
+                bat sh 'docker build -t $REGISTRY/$IMAGE_NAME:$BUILD_NUMBER .'
+        
+            }
+        }
 
         stage('Push Docker Image') {
             steps {
