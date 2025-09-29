@@ -32,9 +32,11 @@ pipeline {
             steps {
                 sh 'npm run'
                 sleep 5
-                def response = httpRequest 'http://localhost:8080'
-                println "Status: ${response.status}"
-                println "Content: ${response.content}"
+                script {
+                    def response = httpRequest 'http://localhost:8080'
+                    println "Status: ${response.status}"
+                    println "Content: ${response.content}"
+                }
             }
         }
         stage('Make HTTP Request') {
