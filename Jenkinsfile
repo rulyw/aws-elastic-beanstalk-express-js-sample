@@ -40,6 +40,10 @@ pipeline {
 
         stage('Push Docker Image') {
             steps {
+                // This step should not normally be used in your script. Consult the inline help for details.
+                withDockerRegistry(credentialsId: '7483548c-0642-48cf-b17d-920161f911b9', toolName: 'docker') {
+                    // some block
+                }    
             //    withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS, usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
             //        sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin $REGISTRY'
             //    }
@@ -47,7 +51,7 @@ pipeline {
             //}
                 // Gunakan kredensial yang disimpan di Jenkins untuk login ke Docker Registry
                 //withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS, usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                    sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin $REGISTRY'
+                //    sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin $REGISTRY'
                 //}
                 // Push image ke Docker Registry
                 //sh 'docker push $REGISTRY/$IMAGE_NAME:$BUILD_NUMBER'
