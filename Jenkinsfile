@@ -55,11 +55,6 @@ pipeline {
             }
         }*/
         
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
 
         stage('Build & Test with Node.js') {
             agent {
