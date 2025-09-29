@@ -16,5 +16,11 @@ COPY . .
 # Expose a 8080 port
 EXPOSE 8080
 
+ENV DOCKER_TLS_CERTDIR=/certs
+
+VOLUME /certs/ca
+VOLUME /certs/client
+VOLUME /var/jenkins_home
+
 # Define the command to run the application
 CMD ["npm", "start"]
