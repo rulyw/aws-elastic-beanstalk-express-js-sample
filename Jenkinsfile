@@ -64,6 +64,7 @@ pipeline {
                 }
             }
             steps {
+                echo 'installing'
                 sh 'npm install --save'
             }
         }
