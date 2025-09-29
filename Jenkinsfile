@@ -30,6 +30,7 @@ pipeline {
         stage('Run Tests') {
             steps {
                 sh 'npm run'
+                echo 'aaaa'
                 sleep 5
                 script {
                     def response = httpRequest 'http://localhost:8080'
