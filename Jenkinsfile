@@ -45,6 +45,7 @@ pipeline {
             //    }
             //    sh 'docker push $REGISTRY/$IMAGE_NAME:$BUILD_NUMBER'
             //}
+                echo 'aaa'
                 echo DOCKER_CREDENTIALS
                 // Gunakan kredensial yang disimpan di Jenkins untuk login ke Docker Registry
                 //withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS, usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
