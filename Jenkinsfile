@@ -59,7 +59,15 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                ${tool 'mydocker'} build -t mydocker-image 
+                script {
+                    // Use the Docker tool in your pipeline by calling the Docker CLI
+                    // The tool name 'mydocker' will be automatically used by Jenkins to find the Docker binary
+
+                    // Example: build the Docker image using 'docker' command
+                    sh '''#!/bin/bash
+                    ${tool 'mydocker'} build -t mydocker-image .
+                    '''
+                }
                 /*echo "$DOCKER_HOST"
                 sh '''
                   docker ps -a
