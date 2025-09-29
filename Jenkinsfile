@@ -16,6 +16,10 @@ pipeline {
         'org.jenkinsci.plugins.docker.commons.tools.DockerTool' 'docker'
     }
     stages {
+        stage('Initialize'){
+            def dockerHome = tool 'mydocker'
+            env.PATH = "${dockerHome}/bin:${env.PATH}"
+        }
         stage('Checkout') {
             steps {
                 git branch: 'main', url: 'https://github.com/rulyw/aws-elastic-beanstalk-express-js-sample.git'  // Update repo URL
