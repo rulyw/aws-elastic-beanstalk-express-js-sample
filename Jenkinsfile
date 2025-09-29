@@ -41,9 +41,7 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 // This step should not normally be used in your script. Consult the inline help for details.
-                withDockerRegistry(credentialsId: '7483548c-0642-48cf-b17d-920161f911b9', toolName: 'docker') {
-                    // some block
-                }    
+                echo 'aa'
             //    withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS, usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
             //        sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin $REGISTRY'
             //    }
