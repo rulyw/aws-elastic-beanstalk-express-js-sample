@@ -22,6 +22,7 @@ VOLUME /certs/ca
 VOLUME /certs/client
 VOLUME /var/jenkins_home
 VOLUME /var/run/docker.sock:/var/run/docker.sock
+VOLUME /usr/bin/docker:/usr/bin/docker
 
 # USER root 
 
