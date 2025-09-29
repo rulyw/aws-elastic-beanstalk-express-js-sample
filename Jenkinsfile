@@ -61,7 +61,7 @@ pipeline {
             steps {
                 echo "$DOCKER_HOST"
                 sh '''
-                  docker build  .
+                  docker ps -a
                 '''
             }
         }
