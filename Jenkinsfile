@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            image 'node:16'  // Use Node 16 Docker image as build agent
+            image 'docker:dind'  // Use Node 16 Docker image as build agent
             args '-u root'   // Run as root to avoid permission issues
         }
     }
