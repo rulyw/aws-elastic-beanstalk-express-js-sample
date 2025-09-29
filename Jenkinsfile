@@ -3,6 +3,7 @@ pipeline {
         docker {
             image 'docker:dind'  // Use Node 16 Docker image as build agent
             args '-u root'   // Run as root to avoid permission issues
+            args '--privileged'
         }
     }
     environment {
