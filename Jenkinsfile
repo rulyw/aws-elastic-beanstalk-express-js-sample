@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            image 'docker:dind'  // Use Node 16 Docker image as build agent
+            image 'node:16'  // Use Node 16 Docker image as build agent
             args '-u root'   // Run as root to avoid permission issues
             args '--privileged'
         }
@@ -35,12 +35,12 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
-            steps {
+        //stage('Build Docker Image') {
+        //    steps {
                 //sh 'docker build -t $REGISTRY/$IMAGE_NAME:$BUILD_NUMBER .'
-                sh 'docker version'
-            }
-        }
+        //        sh 'docker version'
+        //    }
+        //}
 
         stage('Push Docker Image') {
             steps {
