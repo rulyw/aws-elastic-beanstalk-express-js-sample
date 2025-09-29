@@ -58,6 +58,11 @@ pipeline {
         
 
         stage('Build Docker Image') {
+            agent{
+                docker{
+                    image 'docker'
+                }
+            }
             steps {
                 echo "$DOCKER_HOST"
                 sh '''
