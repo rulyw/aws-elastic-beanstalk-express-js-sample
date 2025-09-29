@@ -13,7 +13,7 @@ pipeline {
         DOCKER_CREDENTIALS = credentials('7483548c-0642-48cf-b17d-920161f911b9')  // Docker credentials in Jenkins
     }
     tools {
-        'org.jenkinsci.plugins.docker.commons.tools.DockerTool' 'docker'
+        'org.jenkinsci.plugins.docker.commons.tools.DockerTool' 'mydocker'
     }
     stages {
         stage('Checkout') {
