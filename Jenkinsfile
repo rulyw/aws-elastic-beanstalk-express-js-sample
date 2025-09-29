@@ -12,6 +12,9 @@ pipeline {
         IMAGE_NAME = "21784408_project2"           // Replace with your app name
         DOCKER_CREDENTIALS = credentials('7483548c-0642-48cf-b17d-920161f911b9')  // Docker credentials in Jenkins
     }
+    tools {
+        'org.jenkinsci.plugins.docker.commons.tools.DockerTool' 'docker'
+    }
     stages {
         stage('Checkout') {
             steps {
