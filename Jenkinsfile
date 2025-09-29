@@ -33,6 +33,15 @@ pipeline {
                 sh 'npm run'
             }
         }
+        stage('Make HTTP Request') {
+            steps {
+                script {
+                    def response = httpRequest 'http://localhost:3000'
+                    println "Status: ${response.status}"
+                    println "Content: ${response.content}"
+                }
+            }
+        }
 
         stage('Build Docker Image') {
             steps {
