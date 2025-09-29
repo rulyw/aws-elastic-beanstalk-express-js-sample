@@ -21,7 +21,6 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/rulyw/aws-elastic-beanstalk-express-js-sample.git'  // Update repo URL
             }
         }
-/*
         stage('Install Dependencies') {
             steps {
                 sh 'npm install --save'
@@ -53,21 +52,9 @@ pipeline {
                 sh 'docker build -t $REGISTRY/$IMAGE_NAME:$BUILD_NUMBER .'
         
             }
-        }*/
+        }
         
 
-        stage('Build & Test with Node.js') {
-            agent {
-                docker {
-                    image 'node:16'
-                    args '-v $HOME/.npm:/root/.npm' // cache npm packages
-                }
-            }
-            steps {
-                echo 'installing'
-                sh 'npm install --save'
-            }
-        }
         stage('Build Docker Image') {
             steps {
                 sh '''
