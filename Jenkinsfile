@@ -33,7 +33,10 @@ pipeline {
                 echo 'aaaa'
                 sleep 5
                 script {
-                    def response = httpRequest 'http://localhost:8080'
+                    def response = httpRequest(
+                        url: 'http://localhost:8080',
+                        customHeaders: [[name: 'Authorization', value: 'Bearer YOUR_TOKEN']]
+                    )
                     println "Status: ${response.status}"
                     println "Content: ${response.content}"
                 }
