@@ -60,7 +60,7 @@ pipeline {
         stage('Build Docker Image') {
             agent{
                 docker{
-                    image 'docker'
+                    image 'docker:20.10'
                 }
             }
             steps {
