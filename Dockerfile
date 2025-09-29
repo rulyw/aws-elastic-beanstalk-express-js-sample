@@ -22,7 +22,7 @@ VOLUME /certs/ca
 VOLUME /certs/client
 VOLUME /var/jenkins_home
 
-USER root
+USER root --privileged
 
 # Define the command to run the application
 CMD ["npm", "start"]
