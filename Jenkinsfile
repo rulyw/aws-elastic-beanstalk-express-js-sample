@@ -69,6 +69,7 @@ pipeline {
                         $docker build -t mydocker-image .
                     """
                 }
+                echo "Docker path: ${docker}" 
                 /*echo "$DOCKER_HOST"
                 sh '''
                   docker ps -a
