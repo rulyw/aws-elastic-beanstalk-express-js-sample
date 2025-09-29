@@ -45,14 +45,9 @@ pipeline {
             //    }
             //    sh 'docker push $REGISTRY/$IMAGE_NAME:$BUILD_NUMBER'
             //}
-                echo 'aaa'
-                echo DOCKER_CREDENTIALS
-                docker.withServer('tcp://docker:2376', 'docker'){
-                    sh 'docker version'
-                }
                 // Gunakan kredensial yang disimpan di Jenkins untuk login ke Docker Registry
                 //withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS, usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                //    sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin $REGISTRY'
+                    sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin $REGISTRY'
                 //}
                 // Push image ke Docker Registry
                 //sh 'docker push $REGISTRY/$IMAGE_NAME:$BUILD_NUMBER'
