@@ -1,11 +1,11 @@
 pipeline {
     agent {
-        //dockerfile true
-        docker {
-            image 'node:16'  // Use Node 16 Docker image as build agent
-            args '-u root:root --privileged -v var/run/docker.sock:var/run/docker.sock:'   // Run as root to avoid permission issues
-            args '--privileged'
-        }
+        dockerfile true
+        //docker {
+        //    image 'node:16'  // Use Node 16 Docker image as build agent
+        //    args '-u root:root --privileged -v var/run/docker.sock:var/run/docker.sock:'   // Run as root to avoid permission issues
+        //    args '--privileged'
+        //}
     }
     environment {
         REGISTRY = "rulyw"  // Replace with your Docker registry
@@ -16,10 +16,6 @@ pipeline {
         'org.jenkinsci.plugins.docker.commons.tools.DockerTool' 'docker'
     }
     stages {
-        stage('Initialize'){
-            def dockerHome = tool 'mydocker'
-            env.PATH = "${dockerHome}/bin:${env.PATH}"
-        }
         stage('Checkout') {
             steps {
                 git branch: 'main', url: 'https://github.com/rulyw/aws-elastic-beanstalk-express-js-sample.git'  // Update repo URL
