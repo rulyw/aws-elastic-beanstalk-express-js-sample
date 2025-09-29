@@ -36,7 +36,7 @@ pipeline {
         stage('Make HTTP Request') {
             steps {
                 script {
-                    def response = httpRequest 'http://localhost:3000'
+                    def response = httpRequest 'http://localhost:8080'
                     println "Status: ${response.status}"
                     println "Content: ${response.content}"
                 }
