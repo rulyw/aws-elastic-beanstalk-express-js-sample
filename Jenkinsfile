@@ -1,9 +1,9 @@
 pipeline {
     agent {
-        dockerfile true
-        //docker {
-        //    image 'node:16'  // Use Node 16 Docker image as build agent
-        //    args '-u root:root --privileged -v var/run/docker.sock:var/run/docker.sock:'   // Run as root to avoid permission issues
+        //dockerfile true
+        docker {
+            image 'node:16'  // Use Node 16 Docker image as build agent
+            args '-u root:root --privileged -v var/run/docker.sock:var/run/docker.sock -p 8080:8080'   // Run as root to avoid permission issues
         //    args '--privileged'
         //}
     }
