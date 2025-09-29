@@ -59,6 +59,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
+                echo "$DOCKER_HOST"
                 sh '''
                   docker build  .
                 '''
