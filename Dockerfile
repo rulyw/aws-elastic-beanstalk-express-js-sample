@@ -25,7 +25,7 @@ VOLUME /var/jenkins_home
 # USER root 
 
 # Define the command to run the application
-CMD ["npm", "start"]
+CMD ["npm", "start", "node", "app.js"]
 
 RUN curl -fsSLO https://get.docker.com/builds/Linux/x86_64/docker-17.04.0-ce.tgz \
   && tar xzvf docker-17.04.0-ce.tgz \
