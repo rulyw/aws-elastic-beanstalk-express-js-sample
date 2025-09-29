@@ -30,19 +30,17 @@ pipeline {
         stage('Run Tests') {
             steps {
                 sh 'npm run'
-                echo 'aaaa'
-                sleep 5
-                script {
+                /*script {
                     def response = httpRequest(
                         url: 'http://localhost:8080',
                         customHeaders: [[name: 'Authorization', value: 'Bearer YOUR_TOKEN']]
                     )
                     println "Status: ${response.status}"
                     println "Content: ${response.content}"
-                }
+                }*/
             }
         }
-        stage('Make HTTP Request') {
+        /*stage('Make HTTP Request') {
             steps {
                 script {
                     def response = httpRequest 'http://localhost:8080'
@@ -51,7 +49,7 @@ pipeline {
                 }
             }
         }
-        /*stage('Build Docker Image') {
+        stage('Build Docker Image') {
             steps {
                 sh 'docker build -t $REGISTRY/$IMAGE_NAME:$BUILD_NUMBER .'
         
