@@ -61,7 +61,7 @@ pipeline {
             steps {
                 script {
                     // Use the Docker tool in your pipeline by calling the Docker CLI
-                    def docker = tool name: 'mydocker', type: 'DockerTool'  // Get the path to Docker tool
+                    def docker = tool name: 'mydocker' // Get the path to Docker tool
                     echo "Docker path: ${docker}"  // Optionally print the path for debugging
                     
                     // Use the resolved path of Docker in the shell commands
@@ -69,7 +69,6 @@ pipeline {
                         $docker build -t mydocker-image .
                     """
                 }
-                echo "Docker path: ${docker}" 
                 /*echo "$DOCKER_HOST"
                 sh '''
                   docker ps -a
