@@ -17,11 +17,6 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/rulyw/aws-elastic-beanstalk-express-js-sample.git'  // Update repo URL
             }
         }
-        stage('Install Node.js') {
-            steps {
-                sh 'apk add --no-cache nodejs npm'
-            }
-        }
 
         stage('Install Dependencies') {
             steps {
