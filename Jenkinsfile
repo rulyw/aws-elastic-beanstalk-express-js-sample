@@ -24,8 +24,6 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 sh 'npm install --save'
-                echo "Listing Docker tool directory contents"
-                sh "ls -l ${docker}"
             }
         }
 
