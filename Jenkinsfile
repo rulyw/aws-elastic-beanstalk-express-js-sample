@@ -115,7 +115,7 @@ pipeline {
         
         always {
             // Archive Dockerfile and Snyk outputs if any
-            archiveArtifacts artifacts: 'Dockerfile, snyk*.json, **/*.log', allowEmptyArchive: true
+            archiveArtifacts artifacts: 'Dockerfile, **/*.log', allowEmptyArchive: true
         }
     }
 }
