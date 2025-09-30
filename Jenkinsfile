@@ -43,7 +43,10 @@ pipeline {
             steps {
                 // If tests exist, run them; ensure non-zero exit fails the stage
                 //sh 'npm test --silent || (echo "Tests failed" && exit 1)'
-                sh 'npm run'
+                // sh 'npm run'
+                
+                sh 'npm start & sleep 5'
+                sh 'curl -f http://localhost:8080'
             }
         }
 
