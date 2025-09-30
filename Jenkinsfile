@@ -22,11 +22,11 @@ pipeline {
         DOCKER_HOST = 'tcp://docker:2376'
     }
 
-    options {
-        timestamps()
-        ansiColor('xterm')
-        buildDiscarder(logRotator(numToKeepStr: '20', daysToKeepStr: '14')) // retention (Task 4.2.a)
-    }
+    // options {
+    //     timestamps()
+    //     ansiColor('xterm')
+    //     buildDiscarder(logRotator(numToKeepStr: '20', daysToKeepStr: '14')) // retention (Task 4.2.a)
+    // }
 
     stages {
         stage('Checkout') {
