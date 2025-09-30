@@ -80,9 +80,9 @@ pipeline {
         stage('Build Docker image') {
             steps {
                 sh '''
-                  echo $DOCKER_REGISTRY_CRED_PSW | docker login -u $DOCKER_REGISTRY_CRED_USR -p Assignment21784408
+                  
                   docker build -t rulyw/assignment_21784408:step4 .
-                  docker push rulyw/assignment_21784408:step4
+                  
                 '''
                 // sh '''
                 //     echo "${DOCKER_REGISTRY_CRED_PSW}" | docker login -u "${DOCKER_REGISTRY_CRED_USR}" --password-stdin
@@ -92,7 +92,23 @@ pipeline {
                 // '''
             }
         }
+        stage('Push image') {
+            sh '''
+            echo $DOCKER_REGISTRY_CRED_PSW | docker login -u $DOCKER_REGISTRY_CRED_USR -p Assignment21784408
+            docker push rulyw/assignment_21784408:step4
+            '''
+        }
 
+        stage('Security Scan') {
+            steps {
+                build job: 'OWASP-DC', 
+                      parameters: [
+                        string(name: 'APP_NAME', value: 'express-app'),
+                        string(name: 'BRANCH', value: env.BRANCH_NAME)
+                      ], 
+                      wait: true
+            }
+        }
         // stage('Push image') {
         //     steps {
         //         sh '''
