@@ -52,12 +52,12 @@ pipeline {
                 //sh 'npm test --silent || (echo "Tests failed" && exit 1)'
                 sh 'npm run'
             }
-            post {
-                always {
-                    // If you configure jest-junit, you can publish JUnit; else just archive logs
-                    archiveArtifacts artifacts: 'npm-debug.log, **/junit*.xml', allowEmptyArchive: true
-                }
-            }
+            // post {
+            //     always {
+            //         // If you configure jest-junit, you can publish JUnit; else just archive logs
+            //         archiveArtifacts artifacts: 'npm-debug.log, **/junit*.xml', allowEmptyArchive: true
+            //     }
+            // }
         }
 
         // stage('Security scan (Snyk)') {
