@@ -15,7 +15,7 @@ pipeline {
         DOCKER_IMAGE_TAG        = "build-${env.BUILD_NUMBER}"
 
         // Credentials IDs you will create in Jenkins:
-        // DOCKER_REGISTRY_CRED = credentials('docker-registry-cred')        // username/password
+        DOCKER_REGISTRY_CRED = credentials('0a521f0a-aba4-458b-98b0-8166149666c8')        // username/password
         // SNYK_TOKEN_CRED            = credentials('snyk-token')                             // secret text
 
         // tell docker cli where to talk (inherited in jenkins service) — kept for clarity in logs
