@@ -76,11 +76,16 @@ pipeline {
         stage('Build Docker image') {
             steps {
                 sh '''
-                    echo "${DOCKER_REGISTRY_CRED_PSW}" | docker login -u "${DOCKER_REGISTRY_CRED_USR}" --password-stdin
-                    docker version
-                    docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} .
-                    docker tag ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ${DOCKER_IMAGE_NAME}:latest
+                  echo $DOCKER_REGISTRY_CRED_PSW | docker login -u $DOCKER_REGISTRY_CRED_USR --password-stdin
+                  docker build -t rulyw/assignment_21784408:step4 .
+                  docker push rulyw/assignment_21784408:step4
                 '''
+                // sh '''
+                //     echo "${DOCKER_REGISTRY_CRED_PSW}" | docker login -u "${DOCKER_REGISTRY_CRED_USR}" --password-stdin
+                //     docker version
+                //     docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} .
+                //     docker tag ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ${DOCKER_IMAGE_NAME}:latest
+                // '''
             }
         }
 
