@@ -1,6 +1,9 @@
 pipeline {
     agent {
-        dockerfile true
+        dockerfile {
+            filename 'Dockerfile'
+            args '-v /var/run/docker.sock:/var/run/docker.sock -v /usr/bin/docker:/usr/bin/docker'
+        }
         // Build inside a Node 16 container (requirement 3.1.b.i)
         // docker {
         //     image 'node:16'
