@@ -40,13 +40,15 @@ pipeline {
         }
 
         stage('Unit tests') {
-            steps {
-                // If tests exist, run them; ensure non-zero exit fails the stage
-                //sh 'npm test --silent || (echo "Tests failed" && exit 1)'
-                // sh 'npm run'
-                
+            steps {                
                 sh 'npm start & sleep 5'
                 sh 'curl -f http://localhost:8080'
+            }
+            post {
+                always {
+                    // If you configure jest-junit, you can publish JUnit; else just archive logs
+                    archiveArtifacts artifacts: 'npm-debug.log, **/junit*.xml', allowEmptyArchive: true
+                }
             }
         }
 
@@ -55,7 +57,7 @@ pipeline {
             steps {
                 sh '''
                   
-                  docker build -t rulyw/assignment_21784408:step4 .
+                  docker build -t $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG .
                   
                 '''
             }
@@ -64,7 +66,7 @@ pipeline {
             steps {
                 sh '''
                 echo $DOCKER_REGISTRY_CRED_PSW | docker login -u $DOCKER_REGISTRY_CRED_USR -p Assignment21784408
-                docker push rulyw/assignment_21784408:step4
+                docker push $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG 
                 '''
             }
         }
@@ -87,6 +89,11 @@ pipeline {
         }
         failure {
             echo "Build #${env.BUILD_NUMBER} failed"
+        }
+        
+        always {
+            // Archive Dockerfile and Snyk outputs if any
+            archiveArtifacts artifacts: 'Dockerfile, snyk*.json, **/*.log', allowEmptyArchive: true
         }
     }
 }
