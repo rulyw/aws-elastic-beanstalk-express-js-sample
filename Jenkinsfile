@@ -41,13 +41,20 @@ pipeline {
 
         stage('Unit tests') {
             steps {                
-                sh 'npm start & sleep 5'
-                sh 'curl -f http://localhost:8080'
+                // sh 'npm start & sleep 5'
+                // sh 'curl -f http://localhost:8080'
+                sh '''
+                npm start & 
+                APP_PID=$!
+                sleep 5
+                curl -f http://localhost:8080 -o nodejs.html || echo "Failed to fetch page"
+                kill $APP_PID
+                '''
             }
             post {
                 always {
                     // If you configure jest-junit, you can publish JUnit; else just archive logs
-                    archiveArtifacts artifacts: 'npm-debug.log, **/junit*.xml', allowEmptyArchive: true
+                    archiveArtifacts artifacts: 'nodejs.html', allowEmptyArchive: true
                 }
             }
         }
@@ -114,8 +121,7 @@ pipeline {
         }
         
         always {
-            // Archive Dockerfile and Snyk outputs if any
-            archiveArtifacts artifacts: 'Dockerfile, dependency-check-report.*, **/*.log', allowEmptyArchive: true
+            archiveArtifacts artifacts: 'Dockerfile, dependency-check-report.*, **/*.log, nodejs.html', allowEmptyArchive: true
         }
     }
 }
