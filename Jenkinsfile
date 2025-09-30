@@ -58,7 +58,8 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                script {
+                docker.build('myapp')
+               /* script {
                     // Use the Docker tool in your pipeline by calling the Docker CLI
                     def docker = tool name: 'mydocker' // Get the path to Docker tool
                     echo "Docker path: ${docker}"  // Optionally print the path for debugging
@@ -68,7 +69,7 @@ pipeline {
                         $docker build -t mydocker-image .
                     """
                 }
-                /*echo "$DOCKER_HOST"
+                echo "$DOCKER_HOST"
                 sh '''
                   docker ps -a
                 '''*/
