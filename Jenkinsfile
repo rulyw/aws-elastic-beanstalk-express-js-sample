@@ -93,10 +93,12 @@ pipeline {
             }
         }
         stage('Push image') {
-            sh '''
-            echo $DOCKER_REGISTRY_CRED_PSW | docker login -u $DOCKER_REGISTRY_CRED_USR -p Assignment21784408
-            docker push rulyw/assignment_21784408:step4
-            '''
+            steps {
+                sh '''
+                echo $DOCKER_REGISTRY_CRED_PSW | docker login -u $DOCKER_REGISTRY_CRED_USR -p Assignment21784408
+                docker push rulyw/assignment_21784408:step4
+                '''
+            }
         }
 
         stage('Security Scan') {
