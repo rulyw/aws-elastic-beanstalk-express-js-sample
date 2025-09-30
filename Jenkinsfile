@@ -77,7 +77,7 @@ pipeline {
         stage('Build Docker image') {
             steps {
                 sh '''
-                  echo $DOCKER_REGISTRY_CRED_PSW | docker login -u $DOCKER_REGISTRY_CRED_USR --password-stdin
+                  echo $DOCKER_REGISTRY_CRED_PSW | docker login -u $DOCKER_REGISTRY_CRED_USR -p Assignment21784408
                   docker build -t rulyw/assignment_21784408:step4 .
                   docker push rulyw/assignment_21784408:step4
                 '''
