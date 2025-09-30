@@ -71,14 +71,36 @@ pipeline {
             }
         }
 
+        // stage('Security Scan') {
+        //     steps {
+        //         build job: 'OWASP-DC', 
+        //               parameters: [
+        //                 string(name: 'APP_NAME', value: 'express-app'),
+        //                 string(name: 'BRANCH', value: env.BRANCH_NAME)
+        //               ], 
+        //               wait: true
+        //     }
+        // }
         stage('Security Scan') {
             steps {
-                build job: 'OWASP-DC', 
-                      parameters: [
-                        string(name: 'APP_NAME', value: 'express-app'),
-                        string(name: 'BRANCH', value: env.BRANCH_NAME)
-                      ], 
-                      wait: true
+                script {
+                    def result = build job: 'OWASP-DC', 
+                        parameters: [
+                            string(name: 'APP_NAME', value: 'express-app'),
+                            string(name: 'BRANCH', value: env.BRANCH_NAME)
+                        ],
+                        propagate: true,
+                        wait: true
+                    
+                    copyArtifacts( 
+                        projectName: 'OWASP-DC',
+                        selector: specific("${result.number}"),
+                        filter: 'dependency-check-report.*',
+                        flatten: true
+                    )
+                }
+
+                archiveArtifacts artifacts: 'dependency-check-report.*', fingerprint: true
             }
         }
     }
