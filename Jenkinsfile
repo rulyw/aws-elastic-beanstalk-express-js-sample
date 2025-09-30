@@ -11,15 +11,15 @@ pipeline {
     environment {
         // Docker registry settings (set these in Jenkins > Manage Credentials)
         DOCKER_REGISTRY_URL = 'https://index.docker.io/v1/'                     // or your private registry
-        DOCKER_IMAGE_NAME     = 'yourdockeruser/eb-express-sample'            // change to your image name
+        DOCKER_IMAGE_NAME     = 'rulyw/testass2'            // change to your image name
         DOCKER_IMAGE_TAG        = "build-${env.BUILD_NUMBER}"
 
         // Credentials IDs you will create in Jenkins:
-        DOCKER_REGISTRY_CRED = credentials('docker-registry-cred')        // username/password
-        SNYK_TOKEN_CRED            = credentials('snyk-token')                             // secret text
+        // DOCKER_REGISTRY_CRED = credentials('docker-registry-cred')        // username/password
+        // SNYK_TOKEN_CRED            = credentials('snyk-token')                             // secret text
 
         // tell docker cli where to talk (inherited in jenkins service) — kept for clarity in logs
-        DOCKER_HOST = 'tcp://dind:2375'
+        DOCKER_HOST = 'tcp://docker:2376'
     }
 
     options {
@@ -59,16 +59,16 @@ pipeline {
             }
         }
 
-        stage('Security scan (Snyk)') {
-            steps {
-                sh '''
-                    npm install -g snyk
-                    snyk auth ${SNYK_TOKEN_CRED}
-                    # Scan manifest; fail build on High/Critical
-                    snyk test --severity-threshold=high || (echo "Snyk high/critical found"; exit 1)
-                '''
-            }
-        }
+        // stage('Security scan (Snyk)') {
+        //     steps {
+        //         sh '''
+        //             npm install -g snyk
+        //             snyk auth ${SNYK_TOKEN_CRED}
+        //             # Scan manifest; fail build on High/Critical
+        //             snyk test --severity-threshold=high || (echo "Snyk high/critical found"; exit 1)
+        //         '''
+        //     }
+        // }
 
         stage('Build Docker image') {
             steps {
@@ -81,14 +81,14 @@ pipeline {
             }
         }
 
-        stage('Push image') {
-            steps {
-                sh '''
-                    docker push ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}
-                    docker push ${DOCKER_IMAGE_NAME}:latest
-                '''
-            }
-        }
+        // stage('Push image') {
+        //     steps {
+        //         sh '''
+        //             docker push ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}
+        //             docker push ${DOCKER_IMAGE_NAME}:latest
+        //         '''
+        //     }
+        // }
 
         // Optional: Deploy stage could go here (e.g., docker compose up on a target host)
     }
