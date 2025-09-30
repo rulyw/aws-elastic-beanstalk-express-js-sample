@@ -58,7 +58,9 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                docker.build('myapp')
+                script{
+                    docker.build('myapp')
+                }
                /* script {
                     // Use the Docker tool in your pipeline by calling the Docker CLI
                     def docker = tool name: 'mydocker' // Get the path to Docker tool
