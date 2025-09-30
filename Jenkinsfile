@@ -94,7 +94,7 @@ pipeline {
                     
                     copyArtifacts( 
                         projectName: 'OWASP-DC',
-                        selector: specific("${result.number}"),
+                        selector: [$class: 'SpecificBuildSelector', buildNumber: "${result.number}"],
                         filter: 'dependency-check-report.*',
                         flatten: true
                     )
@@ -115,7 +115,7 @@ pipeline {
         
         always {
             // Archive Dockerfile and Snyk outputs if any
-            archiveArtifacts artifacts: 'Dockerfile, **/*.log', allowEmptyArchive: true
+            archiveArtifacts artifacts: 'Dockerfile, dependency-check-report.*, **/*.log', allowEmptyArchive: true
         }
     }
 }
